@@ -1,0 +1,98 @@
+{
+    "version": 3,
+    "extra_config": {
+        "auth/api-keys": {
+            "strategy": "header",
+            "identifier": "Authorization",
+            "propagate_role": "X-Krakend-Role",
+            "keys": [
+                {
+                    "@description": "ACME Inc.",
+                    "key": "4d2c61e1-34c4-e96c-9456-15bd983c5019",
+                    "roles": [
+                        "user",
+                        "whitelabel"
+                    ]
+                },
+                {
+                    "@description": "Administrators Inc.",
+                    "key": "58427514-be32-0b52-b7c6-d01fada30497",
+                    "roles": [
+                        "admin",
+                        "user"
+                    ]
+                }
+            ]
+        }
+    },
+    "endpoints": [
+        {
+            "endpoint": "/public",
+            "backend": [
+                {
+                    "url_pattern": "/__debug/public",
+                    "host": [
+                        "http://localhost:8080"
+                    ]
+                }
+            ]
+        },
+        {
+            "endpoint": "/admin",
+            "backend": [
+                {
+                    "url_pattern": "/__debug/admin",
+                    "host": [
+                        "http://localhost:8080"
+                    ]
+                }
+            ],
+            "extra_config": {
+                "auth/api-keys": {
+                    "roles": [
+                        "admin"
+                    ]
+                }
+            }
+        },
+        {
+            "endpoint": "/user",
+            "backend": [
+              {
+                  "url_pattern": "/krakend-api/users/1",
+                  "host": [
+                    "https://674ca31354e1fca9290d273b.mockapi.io"
+                  ]
+              }
+            ],
+            "extra_config": {
+                "auth/api-keys": {
+                    "roles": [
+                        "user"
+                    ]
+                }
+            }
+        },
+        {
+            "endpoint": "/custom-header",
+            "backend": [
+                {
+                    "url_pattern": "/__debug/custom-header",
+                    "host": [
+                        "http://localhost:8080"
+                    ]
+                }
+            ],
+            "extra_config": {
+                "auth/api-keys": {
+                    "roles": [
+                        "admin"
+                    ],
+                    "@comment": "Instead of the Authorization header, we will use X-ADMIN-KEY",
+                    "identifier": "X-User-Key",
+                    "strategy": "header"
+                }
+            }
+        }
+    ]
+}
