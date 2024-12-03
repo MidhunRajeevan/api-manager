@@ -1,0 +1,7 @@
+docker run --rm \
+  --network kong_default \
+  -e "KONG_DATABASE=postgres" \
+  -e "KONG_PG_HOST=kong-database" \
+  -e "KONG_PG_PASSWORD=kong" \
+  -e "KONG_PG_USER=kong" \
+  kong:latest kong migrations bootstrap
